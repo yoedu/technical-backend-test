@@ -20,6 +20,7 @@ For json OpenApi doc access to http://api.techtest.local/api/doc.json
 ## Project Setup
 
 You need docker and docker-compose to run the project
+Add api.techtest.local pointing to your localhost in your hosts file
 To set up execute:
     
     #> make up
