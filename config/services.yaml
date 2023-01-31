@@ -1,0 +1,47 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    _instanceof:
+        App\TechTest\Shared\Application\Query\QueryHandler:
+            public: true
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.query }
+
+        App\TechTest\Shared\Application\Command\CommandHandler:
+            public: true
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.command }
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\UI\:
+        resource: '../src/UI/*'
+
+    App\TechTest\Shared\Infrastructure\Bus\Query\MessengerQueryBus:
+        arguments:
+            - '@messenger.bus.query'
+
+    App\TechTest\Shared\Infrastructure\Bus\Command\MessengerCommandBus:
+        arguments:
+            - '@messenger.bus.command'
+
+    App\UI\Http\Controller\:
+        resource: '../src/UI/Http/Controller/*'
+        tags: [ 'controller.service_arguments' ]

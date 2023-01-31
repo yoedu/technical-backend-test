@@ -1,0 +1,26 @@
+version: '3.6'
+services:
+  techtest_api:
+    build:
+      context: docker/api
+      args:
+        USER_ID: ${USER_ID:-0}
+        GROUP_ID: ${GROUP_ID:-0}
+    volumes:
+      - .:/var/www/html/technical-backend-test
+    networks:
+      - technical-backend-test
+  techtest_nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html/technical-backend-test
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - techtest_api
+    networks:
+      - technical-backend-test
+networks:
+  technical-backend-test:
+    driver: bridge

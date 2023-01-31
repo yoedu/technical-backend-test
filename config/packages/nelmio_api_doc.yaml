@@ -1,0 +1,20 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: TechTest
+            description: Technical Backend Test
+            version: 1.0.0
+        components:
+            schemas:
+                Error:
+                    type: object
+                    properties:
+                        status:
+                            type: string
+                            example: Ko
+                        message:
+                            type: string
+                            example: "an error description"
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/items # Accepts routes under /items
